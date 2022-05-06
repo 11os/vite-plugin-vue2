@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import { createVuePlugin } from '../src/index'
 
 const config = defineConfig({
@@ -13,6 +14,28 @@ const config = defineConfig({
   },
   plugins: [
     createVuePlugin({ jsx: true }),
+    createHtmlPlugin({
+      minify: true,
+      /**
+       * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
+       * @default src/main.ts
+       */
+      entry: 'main.js',
+      /**
+       * If you want to store `index.html` in the specified folder, you can modify it, otherwise no configuration is required
+       * @default index.html
+       */
+      template: 'index.html',
+
+      /**
+       * Data that needs to be injected into the index.html ejs template
+       */
+      inject: {
+        data: {
+          title: 'Vite App',
+        },
+      },
+    }),
     {
       name: 'customBlock',
       transform(code, id) {
